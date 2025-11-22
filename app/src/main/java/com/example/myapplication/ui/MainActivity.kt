@@ -43,11 +43,15 @@ class MainActivity : ComponentActivity() {
                         RandomRecipeScreen(viewModel = vm, onGoToFavorites = { navController.navigate("favorites") }, onOpenDetail = { id -> navController.navigate("detail/$id") })
                     }
                     composable("favorites") {
-                        FavoritesScreen(viewModel = vm, onOpenDetail = { id -> navController.navigate("detail/$id") })
+                        FavoritesScreen(
+                            viewModel = vm,
+                            onOpenDetail = { id -> navController.navigate("detail/$id") },
+                            GoBack = { navController.popBackStack() }
+                        )
                     }
                     composable("detail/{id}", arguments = listOf(navArgument("id") { type = NavType.StringType })) { backStackEntry ->
                         val id = backStackEntry.arguments?.getString("id")
-                        DetailScreen(viewModel = vm, id = id)
+                        DetailScreen(viewModel = vm, id = id, GoBack = { navController.popBackStack() })
                     }
                 }
             }

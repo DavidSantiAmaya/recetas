@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -13,10 +14,22 @@ import coil.compose.AsyncImage
 import com.example.myapplication.viewmodel.MainViewModel
 
 @Composable
-fun FavoritesScreen(viewModel: MainViewModel, onOpenDetail: (String) -> Unit) {
+fun FavoritesScreen(viewModel: MainViewModel,
+                    onOpenDetail: (String) -> Unit,
+                    GoBack: () -> Unit,
+
+){
     val favs = viewModel.favorites.collectAsState(initial = emptyList()).value
 
     Column(modifier = Modifier.fillMaxSize().padding(12.dp)) {
+
+        Button(
+            onClick = { GoBack() },
+            modifier = Modifier.padding(start = 8.dp)
+        ) {
+            Text("Regresar")
+        }
+
         Text("Favoritos", modifier = Modifier.padding(8.dp))
         LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             items(favs) { fav ->
@@ -30,6 +43,13 @@ fun FavoritesScreen(viewModel: MainViewModel, onOpenDetail: (String) -> Unit) {
                         Text(fav.strMeal)
                         Text(text = "ID: ${fav.idMeal}")
                     }
+                    Button(
+                        onClick = { onOpenDetail(fav.idMeal) },
+                        modifier = Modifier.padding(start = 8.dp)
+                    ) {
+                        Text("Ver")
+                    }
+
                 }
             }
         }

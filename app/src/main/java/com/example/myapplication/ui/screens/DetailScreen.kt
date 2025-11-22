@@ -2,6 +2,7 @@ package com.example.myapplication.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -13,7 +14,8 @@ import com.example.myapplication.utils.parseIngredients
 import coil.compose.AsyncImage
 
 @Composable
-fun DetailScreen(viewModel: MainViewModel, id: String?) {
+fun DetailScreen(viewModel: MainViewModel, id: String?,
+                 GoBack: () -> Unit) {
     LaunchedEffect(id) {
         id?.let { viewModel.loadDetailsById(it) }
     }
@@ -26,6 +28,15 @@ fun DetailScreen(viewModel: MainViewModel, id: String?) {
     }
 
     LazyColumn(modifier = Modifier.fillMaxSize().padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+
+        item {
+            Button(
+                onClick = { GoBack() },
+            ) {
+                Text("Regresar")
+            }
+        }
+
         item {
             AsyncImage(model = meal.strMealThumb, contentDescription = meal.strMeal, modifier = Modifier.fillMaxWidth().height(220.dp))
             Spacer(modifier = Modifier.height(8.dp))
@@ -41,5 +52,12 @@ fun DetailScreen(viewModel: MainViewModel, id: String?) {
         items(ingredients.size) { idx ->
             Text(ingredients[idx])
         }
+
+        item {
+            Row(horizontalArrangement = Arrangement.spacedBy(12.dp), modifier = Modifier.fillMaxWidth()) {
+                Button(onClick = { viewModel.discardAndFetchNew() }, modifier = Modifier.weight(1f)) { Text("Descartar") }
+            }
+        }
+
     }
 }

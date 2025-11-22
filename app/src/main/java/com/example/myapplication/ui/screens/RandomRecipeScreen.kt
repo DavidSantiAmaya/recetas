@@ -17,10 +17,7 @@ fun RandomRecipeScreen(viewModel: MainViewModel, onGoToFavorites: () -> Unit, on
     val meal = viewModel.randomMeal.collectAsState().value
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
-            Button(onClick = onGoToFavorites) { Text(text = "Favoritos") }
-            Button(onClick = { viewModel.fetchRandomMeal() }) { Text("Actualizar") }
-        }
+
 
         if (meal != null) {
             Card(modifier = Modifier.fillMaxWidth()) {
@@ -42,7 +39,13 @@ fun RandomRecipeScreen(viewModel: MainViewModel, onGoToFavorites: () -> Unit, on
             }
 
             Spacer(modifier = Modifier.height(8.dp))
-            Button(onClick = { meal.idMeal?.let { onOpenDetail(it) } }) { Text("Ver detalles completos") }
+            Button(onClick = { meal.idMeal?.let { onOpenDetail(it) } }) { Text("Ver detalles completos")
+
+                Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
+                    Button(onClick = onGoToFavorites) { Text(text = "Favoritos") }
+                }
+
+            }
         } else {
             Text("Cargando receta aleatoria...")
         }
